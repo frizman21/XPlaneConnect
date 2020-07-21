@@ -31,6 +31,11 @@ public class Aircraft {
 	private Cockpit cockpit;
 	private Autopilot autopilot;
 	
+	public Aircraft(XPlaneConnect xpc) {		
+		cockpit = new Cockpit(xpc);
+		autopilot = new Autopilot(xpc);
+	}
+	
 	public Aircraft() throws SocketException, InterruptedException {
 		xpc = Aircraft.getXPC();
 		
