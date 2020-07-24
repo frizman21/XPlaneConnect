@@ -38,6 +38,11 @@ public class Cockpit extends Base {
 		xpc.sendDREF(ENGINE_THROTTLE_DREF, value);
 	}
 	
+	public float getEngineThrottle() throws IOException {
+		float value = xpc.getDREF(ENGINE_THROTTLE_DREF)[0];
+		return value;
+	}
+	
 	public static final String ENGINE_THROTTLE_DREF = "sim/flightmodel/engine/ENGN_thro";
 	
 	
@@ -45,12 +50,18 @@ public class Cockpit extends Base {
 	public static final int  GEAR_UP   		= 0;
 	public static final int  GEAR_DOWN   		= 1;
 	
-	enum Gear {
+	public enum Gear {
 		Up, Down
 	}
 	
 	public void setGear(Gear gear) throws IOException {
 		xpc.sendDREF(GEAR_HANDLE_DREF, gear.ordinal());
+	}
+	
+	public Gear getGear() throws IOException {
+		float value = xpc.getDREF(GEAR_HANDLE_DREF)[0];
+		int index = (int) value;
+		return Gear.values()[index];	
 	}
 	
 	public Joystick getJoystick() {
