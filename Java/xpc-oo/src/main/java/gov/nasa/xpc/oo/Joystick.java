@@ -18,7 +18,7 @@ public class Joystick extends Base {
 	public static final String JOYSTICK_PITCH_RATIO_DREF      = "sim/joystick/yoke_pitch_ratio";
 
 	public enum Mode {
-		Override(0), Normal(1);
+		Override(1), Normal(0);
 		
 		int value;
 		

@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 
 import gov.nasa.xpc.oo.Aircraft;
 import gov.nasa.xpc.oo.Cockpit.Gear;
+import gov.nasa.xpc.oo.Joystick;
+import gov.nasa.xpc.oo.Joystick.JoystickAxis;
 
 public class FlightCheck {
 
@@ -23,6 +25,12 @@ public class FlightCheck {
 		if(!thresholdBasedFloatsComparison(aircraft.getCockpit().getEngineThrottle(), 0.0)) {
 			System.out.println("Throttle should be zero: it's " + aircraft.getCockpit().getEngineThrottle());	
 		}
+		
+		System.out.println("enabling joystick controls");
+		Joystick stick = aircraft.getCockpit().getJoystick();
+		stick.enableJoystickAxis(JoystickAxis.Heading);
+		stick.enableJoystickAxis(JoystickAxis.Pitch);
+		stick.enableJoystickAxis(JoystickAxis.Roll);		
 	}
 	
 	
