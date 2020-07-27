@@ -12,8 +12,8 @@ import gov.nasa.xpc.XPlaneConnect;
  */
 public class Autopilot extends Base {
 
-	public Autopilot(XPlaneConnect xpc) {
-		super(xpc);
+	public Autopilot(XPlaneConnect xpc, Aircraft aircraft) {
+		super(xpc, aircraft);
 	}
 	
 	public static final String AIR_SPEED_DREF   = "sim/cockpit/autopilot/airspeed";
@@ -28,12 +28,16 @@ public class Autopilot extends Base {
 	public void setAltitude(float value) throws IOException {
 		xpc.sendDREF(Autopilot.ALTITUDE_DREF, value);
 	}
+	
+	public void setVerticalVelocity(float value) throws IOException {
+		xpc.sendDREF(Autopilot.VERTICAL_VELOCITY_DREF, value);
+	}
 
 	public void setHeadingMagnetic(float value) throws IOException {
 		xpc.sendDREF(Autopilot.HEADING_MAG_DREF, value);
 	}
 	
-	enum Mode {
+	public enum Mode {
 		Off(0), FlightDirector(1), On(2);
 		
 		int value;
@@ -79,11 +83,14 @@ public class Autopilot extends Base {
 	public static int STATE_VVI_CLIMB_ENGAGE = 16;
 	public static int STATE_ALTITUDE     = 32;
 	
-	enum State {
+	public enum State {
 		Autothrottle(1), 
-		Heading(2), 
+		Heading(2),
+		WingLevel(4),
 		Airspeed(8),
-		Altitude(32);
+		vviClimb(16),
+		Altitude(32),
+		AltitudeHoldEngaged(16384);
 		
 		int value;
 		
@@ -100,11 +107,54 @@ public class Autopilot extends Base {
 		xpc.sendDREF(AUTOPILOT_STATE_DREF, state.getValue());
 	}
 	
+	public boolean isState(State state) throws IOException {
+		float[] autopilotStateArray = xpc.getDREF(AUTOPILOT_STATE_DREF);
+		int autopilotState = (int) autopilotStateArray[0];
+		
+//		System.out.println("autopilotState: " + autopilotState);
+		
+		int result = autopilotState & state.value;
+		
+		return result > 0;
+	}
+	
+	public void setState(State state, boolean isOn) throws IOException {
+		boolean current = isState(state);
+		if(current != isOn) {
+			toggleState(state);
+		}
+	}
+	
 	public void changeToAltitude(float altitude, float verticalVelocity) throws IOException {
-    	xpc.sendDREF(ALTITUDE_DREF, altitude);
-    	xpc.sendDREF(VERTICAL_VELOCITY_DREF, verticalVelocity);
-		xpc.sendDREF(AUTOPILOT_STATE_DREF, STATE_VVI_CLIMB_ENGAGE);
-		xpc.sendDREF(AUTOPILOT_STATE_DREF, STATE_ALTITUDE);
+    	this.setAltitude(altitude);
+    	this.setVerticalVelocity(verticalVelocity);
+		this.setState(State.vviClimb, true);		
+		this.setState(State.Altitude, true);
+	}
+	
+	public void setAndEngage(float airspeed, float headingMagnetic, float altitude, float verticalVelocity) throws IOException, InterruptedException {
+		System.out.println("off line");
+		this.setMode(Mode.Off);
+		
+		Thread.sleep(1000);
+		
+		System.out.println("setting values");
+		this.setAirspeed(airspeed);
+		this.setHeadingMagnetic(headingMagnetic);
+		
+		System.out.println("on line");
+		this.setMode(Mode.On);
+		
+		Thread.sleep(1000);
+		
+		System.out.println("toggle states");
+		this.setState(State.Autothrottle, true);
+		this.setState(State.Heading, true);
+		
+		double currentAltInFeet = aircraft.getPosition().z * 3.28084;
+		float multi = currentAltInFeet < altitude ? 1.0f : -1.0f;
+		
+		this.changeToAltitude(altitude,multi * verticalVelocity);
 	}
 	
 }

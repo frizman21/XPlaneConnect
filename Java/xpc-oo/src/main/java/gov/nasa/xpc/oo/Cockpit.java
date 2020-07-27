@@ -8,10 +8,10 @@ public class Cockpit extends Base {
 
 	private Joystick joystick;
 	
-	public Cockpit(XPlaneConnect xpc) {
-		super(xpc);
+	public Cockpit(XPlaneConnect xpc, Aircraft aircraft) {
+		super(xpc, aircraft);
 		
-		joystick = new Joystick(xpc);
+		joystick = new Joystick(xpc, aircraft);
 	}
 	
 	public void setParkingBrake(boolean isBrakeSet) throws IOException {

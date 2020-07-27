@@ -6,9 +6,8 @@ import gov.nasa.xpc.XPlaneConnect;
 
 public class Joystick extends Base {
 
-	public Joystick(XPlaneConnect xpc) {
-		super(xpc);
-		// TODO Auto-generated constructor stub
+	public Joystick(XPlaneConnect xpc, Aircraft aircraft) {
+		super(xpc, aircraft);
 	}
 	
 	public static final String JOYSTICK_PITCH_OVERRIDE_DREF   = "sim/operation/override/override_joystick_pitch";

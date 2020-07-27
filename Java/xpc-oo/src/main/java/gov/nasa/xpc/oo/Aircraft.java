@@ -32,15 +32,15 @@ public class Aircraft {
 	private Autopilot autopilot;
 	
 	public Aircraft(XPlaneConnect xpc) {		
-		cockpit = new Cockpit(xpc);
-		autopilot = new Autopilot(xpc);
+		cockpit = new Cockpit(xpc, this);
+		autopilot = new Autopilot(xpc, this);
 	}
 	
 	public Aircraft() throws SocketException, InterruptedException {
 		xpc = Aircraft.getXPC();
 		
-		cockpit = new Cockpit(xpc);
-		autopilot = new Autopilot(xpc);
+		cockpit = new Cockpit(xpc, this);
+		autopilot = new Autopilot(xpc, this);
 	}
 	
 	public Position getPosition() throws IOException {
