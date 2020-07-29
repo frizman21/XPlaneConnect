@@ -60,11 +60,11 @@ public class Aircraft {
 	}
 	
 	public float getHeading() throws IOException {
-		return xpc.getDREF("sim/flightmodel/position/true_psi")[0];
+		return xpc.getDREF(TRUE_PSI)[0];
 	}
 	
 	public float getAirSpeed() throws IOException {
-		return xpc.getDREF("sim/flightmodel/position/true_airspeed")[0];
+		return xpc.getDREF(TRUE_AIRSPEED)[0];
 	}
 
 	public Cockpit getCockpit() {
@@ -74,5 +74,19 @@ public class Aircraft {
 	public Autopilot getAutopilot() {
 		return autopilot;
 	}
+	
+	/**
+	 * 
+	 * @return fuel remaining in pounds
+	 * 
+	 * @throws IOException
+	 */
+	public float getFuelRemaining() throws IOException {
+		return xpc.getDREF(FUEL)[0] * 2.20462f;
+	}
+	
+	public static final String TRUE_PSI = "sim/flightmodel/position/true_psi";
+	public static final String TRUE_AIRSPEED = "sim/flightmodel/position/true_airspeed";
+	public static final String FUEL = "sim/flightmodel/weight/m_fuel_total";
 	
 }

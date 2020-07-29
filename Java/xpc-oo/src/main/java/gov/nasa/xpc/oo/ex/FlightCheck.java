@@ -30,7 +30,9 @@ public class FlightCheck {
 		Joystick stick = aircraft.getCockpit().getJoystick();
 		stick.enableJoystickAxis(JoystickAxis.Heading);
 		stick.enableJoystickAxis(JoystickAxis.Pitch);
-		stick.enableJoystickAxis(JoystickAxis.Roll);		
+		stick.enableJoystickAxis(JoystickAxis.Roll);
+		
+		float fuel = aircraft.getFuelRemaining();
 	}
 	
 	
