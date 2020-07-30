@@ -15,6 +15,7 @@ public class Joystick extends Base {
 	public static final String JOYSTICK_ROLL_OVERRIDE_DREF    = "sim/operation/override/override_joystick_roll";
 	public static final String JOYSTICK_HEADING_RATIO_DREF    = "sim/joystick/yoke_heading_ratio";
 	public static final String JOYSTICK_PITCH_RATIO_DREF      = "sim/joystick/yoke_pitch_ratio";
+	public static final String JOYSTICK_ROLL_RATIO_DREF       = "sim/joystick/yoke_roll_ratio";
 
 	public enum Mode {
 		Override(1), Normal(0);
@@ -74,5 +75,9 @@ public class Joystick extends Base {
 	 */
 	public void setPitchRatio(float value) throws IOException {
 		xpc.sendDREF(JOYSTICK_PITCH_RATIO_DREF, value);	
+	}
+	
+	public void setRollRatio(float value) throws IOException {
+		xpc.sendDREF(JOYSTICK_ROLL_RATIO_DREF, value);	
 	}
 }

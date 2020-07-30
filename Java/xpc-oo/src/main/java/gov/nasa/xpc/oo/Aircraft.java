@@ -13,7 +13,7 @@ public class Aircraft {
 	
 	private static int AIRCRAFT_ID = 0;
 	
-	static XPlaneConnect getXPC() throws SocketException, InterruptedException {
+	public static XPlaneConnect getXPC() throws SocketException, InterruptedException {
 		
 		xpcLock.acquire();
 		
@@ -46,6 +46,11 @@ public class Aircraft {
 	public Position getPosition() throws IOException {
 		double[] posi = xpc.getPOSI(AIRCRAFT_ID); 
 		return new Position(posi);
+	}
+	
+	public Orientation getOrientation() throws IOException {
+		double[] posi = xpc.getPOSI(AIRCRAFT_ID); 
+		return new Orientation(posi);
 	}
 	
 	public Control getControl() throws IOException {
