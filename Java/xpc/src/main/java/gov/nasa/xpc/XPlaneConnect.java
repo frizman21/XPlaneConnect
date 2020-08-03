@@ -588,10 +588,14 @@ public class XPlaneConnect implements AutoCloseable
         double[] result = new double[7];
         ByteBuffer bb = ByteBuffer.wrap(data);
         bb.order(ByteOrder.LITTLE_ENDIAN);
-        for(int i = 0; i < 7; ++i)
-        {
-            result[i] = bb.getFloat(6 + 4 * i);
-        }
+
+        result[0] = bb.getDouble(6);
+        result[1] = bb.getDouble(14);
+        result[2] = bb.getDouble(22);
+        result[3] = bb.getFloat(30);
+        result[4] = bb.getFloat(34);
+        result[5] = bb.getFloat(38);
+        
         return result;
     }
 
