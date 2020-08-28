@@ -43,6 +43,28 @@ public class Aircraft {
 		autopilot = new Autopilot(xpc, this);
 	}
 	
+	
+	/**
+	 * 
+	 * @return weight in lbs
+	 * 
+	 * @throws IOException
+	 */
+	public float getPayloadWeight() throws IOException {
+		float[] result = xpc.getDREF(PAYLOAD_WEIGHT);
+		return result[0] * (float) KGS_TO_LBS;
+	}
+	
+	/**
+	 * 
+	 * @param weight in lbs
+	 * @throws IOException 
+	 */
+	public void setPayloadWeight(float weight) throws IOException {
+		float weightInKgs = weight / (float) KGS_TO_LBS;
+		xpc.sendDREF(PAYLOAD_WEIGHT, weightInKgs);
+	}
+	
 	public Position getPosition() throws IOException {
 		double[] posi = xpc.getPOSI(AIRCRAFT_ID); 
 		return new Position(posi);
@@ -90,6 +112,8 @@ public class Aircraft {
 		return xpc.getDREF(FUEL)[0] * 2.20462f;
 	}
 	
+	public static final double KGS_TO_LBS = 2.20462;
+	public static final String PAYLOAD_WEIGHT = "sim/flightmodel/weight/m_fixed";
 	public static final String TRUE_PSI = "sim/flightmodel/position/true_psi";
 	public static final String TRUE_AIRSPEED = "sim/flightmodel/position/true_airspeed";
 	public static final String FUEL = "sim/flightmodel/weight/m_fuel_total";
