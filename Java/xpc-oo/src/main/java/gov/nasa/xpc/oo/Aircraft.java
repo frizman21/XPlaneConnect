@@ -112,10 +112,16 @@ public class Aircraft {
 		return xpc.getDREF(FUEL)[0] * 2.20462f;
 	}
 	
+	public void setFuel(float weight) throws IOException {
+		float weightInKgs = weight / (float) KGS_TO_LBS;
+		xpc.sendDREF(FUEL_INPUT, weightInKgs);
+	}
+	
 	public static final double KGS_TO_LBS = 2.20462;
 	public static final String PAYLOAD_WEIGHT = "sim/flightmodel/weight/m_fixed";
 	public static final String TRUE_PSI = "sim/flightmodel/position/true_psi";
 	public static final String TRUE_AIRSPEED = "sim/flightmodel/position/true_airspeed";
 	public static final String FUEL = "sim/flightmodel/weight/m_fuel_total";
+	public static final String FUEL_INPUT = "sim/flightmodel/weight/m_fuel";
 	
 }
